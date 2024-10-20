@@ -1,5 +1,6 @@
 import pathlib
 import pandas as pd
+import matplotlib.pyplot as plt
 pd.set_option("display.max_columns", None)
 
 def describe_dataframe(frame):
