@@ -100,7 +100,7 @@ if __name__ == '__main__':
     # missing_rows = merged_df[merged_df.isna().any(axis=1)]
     # describe_dataframe(missing_rows)
     # missing_rows = drop_columns(missing_rows, ['Name'])
-    # missing_rows = remove_rows(missing_rows, [0, 17, 31])
+    merged_df = remove_rows(merged_df, [0, 17, 31])
     # describe_dataframe(missing_rows)
     # print(missing_rows)
     # missing_rows = missing_rows.reset_index(drop=True)
