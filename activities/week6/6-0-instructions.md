@@ -35,5 +35,3 @@ Tutorial activities can be found in the activities/week6 folder. These are:
 There are other techniques that can be considered at this stage, refer to the lecture for other ideas.
 
 [Next activity](6-1-introduction.md)
-
-test
