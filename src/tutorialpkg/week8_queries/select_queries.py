@@ -61,7 +61,7 @@ def run_chinook_select_join_queries(con, cur):
     # 7. LEFT JOIN: Find the artists who do not have any albums
     rows = cur.execute('SELECT artists.Name, AlbumId '
                        'FROM artists '
-                       'LEFT JOIN albums ON albums.ArtistId = artists.ArtistId '
+                       'LEFT JOIN albums ON albums.ArtistId = artists.ArtistId'
                        'WHERE AlbumId IS NULL;').fetchall()
     print("\nArtists who do not have any albums:")
     [print(row) for row in rows]
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     ch_con, ch_cur = get_db_con(db_path_chinook)
 
     # Chinook database select queries
-    run_chinook_select_queries(ch_con, ch_cur)
+    # run_chinook_select_queries(ch_con, ch_cur)
 
     # Chinook database select queries with join
     # run_chinook_select_join_queries(ch_con, ch_cur)
@@ -124,20 +124,53 @@ if __name__ == '__main__':
     pq_con, pq_cur = get_db_con(db_path_para_queries)
 
     # 1. Find all disability categories from the 'Disability' table and sort them in alphabetical order.
+    rows = pq_cur.execute("SELECT category FROM Disability ORDER BY category ASC").fetchall()
+    print("Disability categories in alphabetical order:")
+    [print(row) for row in rows]
 
     # 2. Find the unique 'region' names from the 'Country' table.
+    rows = pq_cur.execute("SELECT DISTINCT region FROM Country").fetchall()
+    print("Unique region names from the 'Country' table:")
+    [print(row) for row in rows]
 
     # 3. Find the start and end dates of all events that occured in years between 1960 and 1969.
+    rows = pq_cur.execute("SELECT event_id, start, end FROM Event WHERE year BETWEEN '1960' AND '1969'").fetchall()
+    print("Start and end dates of all events that occured in years between 1960 and 1969:")
+    [print(row) for row in rows]
 
     # 4. Find 5 country codes from the 'Host' table.
+    rows = pq_cur.execute("SELECT country_code FROM Host LIMIT 5").fetchall()
+    print("5 country codes from the 'Host' table:")
+    [print(row) for row in rows]
 
     # 5. Find the event_id and number of teams in the MedalResult table for each Event.
+    rows = pq_cur.execute("SELECT event_id, COUNT(DISTINCT country_code) FROM MedalResult GROUP BY event_id").fetchall()
+    print("Event_id and number of teams in the MedalResult table for each Event:")
+    [print(row) for row in rows]
 
     # 6. Find the event_id and number of teams in the MedalResult table for event with event_id 27.
+    rows = pq_cur.execute("SELECT event_id, COUNT(DISTINCT country_code) FROM MedalResult WHERE event_id = 27").fetchall()
+    print("Event_id and number of teams in the MedalResult table for event with event_id 27:")
+    [print(row) for row in rows]
 
-    # 7. Find the event name and number of teams in the MedalResult table for event with event_id 27.
+    # 7. Find the host name and number of teams in the MedalResult table for event with event_id 27.
+    rows = pq_cur.execute("""SELECT Host.host, COUNT(DISTINCT MedalResult.country_code)
+                          FROM MedalResult
+                          INNER JOIN HostEvent ON MedalResult.event_id = HostEvent.event_id
+                          INNER JOIN Host ON HostEvent.host_id = Host.host_id
+                          WHERE MedalResult.event_id = 27""").fetchall()
+    print("Event name and number of teams in the MedalResult table for event with event_id 27:")
+    [print(row) for row in rows]
 
     # 8. Find the year, host name, number of male participants and number of female participants in all winter games.
+    # rows = pq_cur.execute("""SELECT year, participants_m, participants_f
+    #                       FROM Event
+    #                       INNER JOIN participants
+    #                       ON Event.event_id = participants.event_id
+    #                       WHERE Event.type = 'Winter'
+    #                       """).fetchall()
+    # print("year, host name, number of male participants and number of female participants in all winter games:")
+    # [print(row) for row in rows]
 
     # 9. Find the year, event name, event type and rank for all events where the team from the Faroe Islands appear
     # in the MedalResults.
